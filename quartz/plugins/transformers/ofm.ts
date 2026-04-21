@@ -101,7 +101,7 @@ const arrowMapping: Record<string, string> = {
   "<==": "&lArr;",
 }
 
-function canonicalizeCallout(calloutName: string): keyof typeof calloutMapping {
+export function canonicalizeCallout(calloutName: string): keyof typeof calloutMapping {
   const normalizedCallout = calloutName.toLowerCase() as keyof typeof calloutMapping
   // if callout is not recognized, make it a custom one
   return calloutMapping[normalizedCallout] ?? calloutName
