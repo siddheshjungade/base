@@ -14,12 +14,12 @@ function toCodePoint(unicodeSurrogates: string) {
   while (i < unicodeSurrogates.length) {
     c = unicodeSurrogates.charCodeAt(i++)
     if (p) {
-      r.push((65536 + ((p - 55296) << 10) + (c - 56320)).toString(16))
+      r.push((65536 + ((p - 55296) << 10) + (c - 56320)).toString(16).padStart(4, "0"))
       p = 0
     } else if (55296 <= c && c <= 56319) {
       p = c
     } else {
-      r.push(c.toString(16))
+      r.push(c.toString(16).padStart(4, "0"))
     }
   }
   return r.join("-")
@@ -37,11 +37,29 @@ export async function loadEmoji(code: string) {
     emojimap = data
   }
 
-  const name = emojimap.codePointToName[`${code.toUpperCase()}`]
-  if (!name) throw new Error(`codepoint ${code} not found in map`)
+  const uppercaseCode = code.toUpperCase()
+  let name = emojimap.codePointToName[uppercaseCode]
+
+  // Keycap emoji (e.g. 1️⃣) have FE0F stripped by getIconCode but the map
+  // stores the full sequence (e.g. "0031-FE0F-20E3"). Try re-inserting it.
+  if (!name) {
+    const segments = uppercaseCode.split("-")
+    for (let i = 0; i < segments.length - 1 && !name; i++) {
+      const candidate = [...segments.slice(0, i + 1), "FE0F", ...segments.slice(i + 1)].join("-")
+      name = emojimap.codePointToName[candidate]
+    }
+  }
+
+  if (!name) {
+    console.warn(`Warning: emoji codepoint ${code} not found in map, skipping`)
+    return ""
+  }
 
   const b64 = emojimap.nameToBase64[name]
-  if (!b64) throw new Error(`name ${name} not found in map`)
+  if (!b64) {
+    console.warn(`Warning: emoji name ${name} not found in map, skipping`)
+    return ""
+  }
 
   return b64
 }
