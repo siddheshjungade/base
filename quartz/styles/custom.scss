@@ -1,3 +1,112 @@
 @use "./base.scss";
+@use "./variables.scss" as *;
 
-// put your custom CSS here!
+// ── Responsive / mobile & tablet enhancements ──────────────────────────
+
+// Touch-friendly tap targets
+@media all and ($mobile) {
+  a,
+  button,
+  summary,
+  input[type="checkbox"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  // Ensure article links don't force large sizes
+  article a,
+  .tags a,
+  .backlinks a,
+  .toc-content a {
+    min-height: unset;
+    min-width: unset;
+    padding: 0.15rem 0;
+    display: inline;
+  }
+
+  // Fix code blocks overflow on small screens
+  pre {
+    max-width: calc(100vw - 2rem);
+  }
+
+  // Better spacing for article content on mobile
+  article {
+    & > h1 {
+      font-size: 1.6rem;
+    }
+
+    & > h2 {
+      font-size: 1.25rem;
+    }
+
+    & > h3 {
+      font-size: 1.05rem;
+    }
+  }
+
+  // Footer stacks vertically on mobile
+  footer ul {
+    flex-wrap: wrap;
+  }
+
+  // Table scroll indicator on mobile
+  .table-container {
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+
+    & > table {
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+@media all and ($tablet) {
+  // Code blocks on tablet
+  pre {
+    max-width: calc(100vw - #{$sidePanelWidth} - 4rem);
+  }
+
+  article {
+    & > h1 {
+      font-size: 1.65rem;
+    }
+  }
+
+  // Better table handling on tablet
+  .table-container {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  footer ul {
+    flex-wrap: wrap;
+  }
+}
+
+// Responsive images
+@media all and ($mobile) {
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Prevent horizontal overflow at all breakpoints
+body {
+  overflow-x: hidden;
+}
+
+// Meta viewport-aware content spacing
+@media all and ($mobile) {
+  .content-meta {
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+}
+
+@media all and ($tablet) {
+  .content-meta {
+    font-size: 0.9rem;
+  }
+}

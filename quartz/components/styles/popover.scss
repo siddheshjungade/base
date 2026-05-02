@@ -79,6 +79,10 @@
   @media all and ($mobile) {
     display: none !important;
   }
+
+  @media all and ($tablet) {
+    display: none !important;
+  }
 }
 
 .active-popover,

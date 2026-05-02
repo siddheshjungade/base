@@ -1,3 +1,5 @@
+@use "../../styles/variables.scss" as *;
+
 footer {
   text-align: left;
   margin-bottom: 4rem;
@@ -11,5 +13,11 @@ footer {
     flex-direction: row;
     gap: 1rem;
     margin-top: -1rem;
+
+    @media all and ($mobile) {
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0;
+    }
   }
 }

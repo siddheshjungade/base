@@ -13,9 +13,21 @@ li.section-li {
     display: grid;
     grid-template-columns: fit-content(8em) 3fr 1fr;
 
-    @media all and ($mobile) {
+    @media all and ($tablet) {
+      grid-template-columns: fit-content(6em) 3fr;
       & > .tags {
         display: none;
+      }
+    }
+
+    @media all and ($mobile) {
+      grid-template-columns: 1fr;
+      row-gap: 0.25rem;
+      & > .tags {
+        display: none;
+      }
+      & .meta {
+        font-size: 0.85rem;
       }
     }
 

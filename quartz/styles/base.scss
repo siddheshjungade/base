@@ -12,6 +12,12 @@ html {
 
   @media all and ($mobile) {
     scroll-padding-top: 4rem;
+    font-size: 15px;
+  }
+
+  @media all and ($tablet) {
+    scroll-padding-top: 4rem;
+    font-size: 15.5px;
   }
 }
 
@@ -159,6 +165,19 @@ a {
   }
 }
 
+.tablet-only {
+  display: none;
+  &.flex-component {
+    display: none;
+  }
+  @media all and ($tablet) {
+    &.flex-component {
+      display: flex;
+    }
+    display: initial;
+  }
+}
+
 .page {
   max-width: calc(#{map.get($breakpoints, desktop)} + 300px);
   margin: 0 auto;
@@ -211,10 +230,11 @@ a {
       grid-template-areas: #{map.get($mobileGrid, templateAreas)};
     }
 
-    @media all and not ($desktop) {
-      padding: 0 1rem;
+    @media all and ($tablet) {
+      padding: 0 1.5rem;
     }
     @media all and ($mobile) {
+      padding: 0 1rem;
       margin: 0 auto;
     }
 
@@ -232,6 +252,9 @@ a {
       z-index: 1;
       grid-area: grid-sidebar-left;
       flex-direction: column;
+      @media all and ($tablet) {
+        padding: $topSpacing 1rem 2rem 1rem;
+      }
       @media all and ($mobile) {
         gap: 0;
         align-items: center;
@@ -240,7 +263,9 @@ a {
         height: unset;
         flex-direction: row;
         padding: 0;
-        padding-top: 2rem;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        flex-wrap: wrap;
       }
     }
 
@@ -252,15 +277,28 @@ a {
         margin-left: inherit;
         margin-right: inherit;
       }
-      @media all and not ($desktop) {
+      @media all and ($tablet) {
         position: initial;
         height: unset;
         width: 100%;
-        flex-direction: row;
-        padding: 0;
+        flex-direction: column;
+        padding: 1rem 0;
+        & > * {
+          max-height: 20rem;
+        }
+        & > .toc {
+          display: none;
+        }
+      }
+      @media all and ($mobile) {
+        position: initial;
+        height: unset;
+        width: 100%;
+        flex-direction: column;
+        padding: 1rem 0;
         & > * {
           flex: 1;
-          max-height: 24rem;
+          max-height: 18rem;
         }
         & > .toc {
           display: none;
@@ -275,6 +313,9 @@ a {
     & .page-header {
       grid-area: grid-header;
       margin: $topSpacing 0 0 0;
+      @media all and ($tablet) {
+        margin-top: calc(#{$topSpacing} * 0.75);
+      }
       @media all and ($mobile) {
         margin-top: 0;
         padding: 0;
