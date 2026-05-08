@@ -17,6 +17,7 @@ const { decode } = hePkg;
 
 const wikilinkRegex = /(!)?\[\[(?<link>[^|\]#]+)(?:#(?<fragment>[^|\]]+))?\|?(?<displayText>[^\]]*)\]\]|(?<!:)#(?<tag>[A-Za-z0-9_-]+)(?=\s|$)/g
 const imageEmbedRegex = /^(?<width>\d+)(x(?<height>\d+))?$/
+const mdHrefRegex = /(<a\s[^>]*href=")([^"]*?)\.md(#[^"]*)?(")/g
 const youtubeImageRegex = /<img\b[^>]*\bsrc=["'](https?:\/\/(?:www\.)?youtu[^\s"'>]*)["'][^>]*>/g
 const calloutRegex = /<blockquote\b[^>]*>\s*<p\b[^>]*>\s*\[!(?<type>\w+)\]\s*(?<remain>[\s\S]*?)<\/p>/g
 const codeBlockRegex = /<code\b[^>]*>[\s\S]*?<\/code>/g
@@ -221,6 +222,10 @@ export const Mindmap: QuartzTransformerPlugin<Partial<Options>> = (userOpts) => 
             calloutRegex,
             calloutReplacement()
           )
+          // Strip .md extension from regular markdown link hrefs
+          node.content = node.content.replace(mdHrefRegex, (_: string, pre: string, path: string, anchor: string | undefined, post: string) => {
+            return pre + path + (anchor ?? "") + post
+          })
         })(root)
 
         file.data.mindmap = root
